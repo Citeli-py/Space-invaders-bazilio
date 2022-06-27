@@ -1,6 +1,5 @@
 #include <allegro.h>
 
-
 class projetil
 {
 	public:
