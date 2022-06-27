@@ -14,6 +14,8 @@ int main()
 	allegro_init();
 	install_timer();
 	install_keyboard();
+	install_sound(DIGI_AUTODETECT, MID_AUTODETECT, NULL);
+	
 	set_color_depth(32);
 	set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
 	set_window_title("Space Invaders");
