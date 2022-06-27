@@ -1,2 +1,5 @@
 # Space-invaders-bazilio
-Jogo lindo, dos CCzentos
+- Sprites
+- Fundo
+- Musica, sons(tiro jogador, tiro inimigo, passar de fase, destruir nave)
+- Animação
