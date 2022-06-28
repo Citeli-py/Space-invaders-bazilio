@@ -23,7 +23,8 @@ class projetil
 		int dir=1;
 		if(v<0) dir = -1;
 		//circle(tela, x, y-10, 5, makecol(255,0,0));
-		rectfill(tela, x, y, x+largura, y-dir*altura, makecol(255,0,0));
+		BITMAP* tiroImagem = load_bitmap("sprite/tiro_img.bmp", NULL);
+		draw_sprite(tela, tiroImagem, x+largura+13, y);
 	}
 	
 	void movimento()
@@ -39,6 +40,7 @@ class jogador
 		int x,y;
 		int v;
 		BITMAP* tela;
+		BITMAP* sprite;
 		int shot_cont;
 		
 	jogador(BITMAP* bmp, int xo, int yo)
@@ -52,8 +54,24 @@ class jogador
 	
 	void movimento()
 	{
-		if(key[KEY_D]||key[KEY_RIGHT]) x+=v;
-		if(key[KEY_A]||key[KEY_LEFT]) x-=v;	
+		if(key[KEY_D]||key[KEY_RIGHT])
+		{
+			BITMAP* naveDir = load_bitmap("sprite/right.bmp", NULL);
+			sprite = naveDir;	
+			x+=v;
+		}
+		else if(key[KEY_A]||key[KEY_LEFT])
+		{
+			BITMAP* naveEsq = load_bitmap("sprite/left.bmp", NULL);
+			sprite = naveEsq;
+			x-=v;
+		}
+		else
+		{
+			BITMAP* naveCentro = load_bitmap("sprite/center.bmp", NULL);
+			sprite = naveCentro;
+		}
+			
 	}
 	
 	projetil atirar()
@@ -66,7 +84,7 @@ class jogador
 	void desenha()
 	{
 		shot_cont++;
-		circlefill(tela, x, y, 10, makecol(255,255,255));
+		draw_sprite(tela, sprite, x, y);
 		draw_sprite(screen, tela, 0, 0);
 		clear(tela);
 	}
@@ -90,16 +108,16 @@ int main()
 	set_window_title("Space Invaders");
 	
 	BITMAP* buffer = create_bitmap(800,600);
-	jogador j(buffer,400,550);
+	jogador j(buffer,380,500); //sprite tem 20px de largura
 	
 	int pos=0, len=100;
 	projetil *tiros = (projetil*) malloc(len*sizeof(projetil));
 	inicializa(buffer, tiros, len);
 	
 	//Sons
-	SAMPLE *start = load_sample("inicio.wav");
-	SAMPLE *soundtrack = load_sample("soundtrack.wav");
-	SAMPLE *tiro = load_sample("tiro.wav");
+	SAMPLE *start = load_sample("audio/inicio.wav");
+	SAMPLE *soundtrack = load_sample("audio/soundtrack.wav");
+	SAMPLE *tiro = load_sample("audio/tiro.wav");
 	play_sample(start, 100, 128, 1000, 0);
 	play_sample(soundtrack, 100, 128, 1000, 1);
 	
@@ -124,6 +142,7 @@ int main()
 		
 		j.movimento();
 		j.desenha();
+		
 		rest(10);
 	}
 	destroy_bitmap(buffer);
