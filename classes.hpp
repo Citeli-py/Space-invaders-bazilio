@@ -1,18 +1,14 @@
 #include <allegro.h>
 
-
 class projetil
 {
 	public:
 		int x, y, v;
-		int largura, altura;
 		BITMAP* tela;
 		
 	projetil(BITMAP* bmp, int xo, int yo, int dir)
 	{
 		tela = bmp;
-		largura = 5;
-		altura = 20;
 		x = xo;
 		y = yo;
 		v = 7*dir;
@@ -20,11 +16,8 @@ class projetil
 	
 	void desenha()
 	{
-		int dir=1;
-		if(v<0) dir = -1;
-		//circle(tela, x, y-10, 5, makecol(255,0,0));
 		BITMAP* tiroImagem = load_bitmap("sprite/tiro_img.bmp", NULL);
-		draw_sprite(tela, tiroImagem, x+largura+13, y);
+		draw_sprite(tela, tiroImagem, x, y);
 	}
 	
 	void movimento()
@@ -32,7 +25,6 @@ class projetil
 		y += v;
 	}
 };
-
 
 class jogador
 {
@@ -74,11 +66,18 @@ class jogador
 			
 	}
 	
-	projetil atirar()
+	int atirar(projetil *tiros, int pos, int len, SAMPLE *som)
 	{
-		shot_cont = 0;
-		projetil p(tela, x, y-15, -1);
-		return p;
+		if(key[KEY_SPACE] && shot_cont >= 30)
+		{
+			shot_cont = 0;
+			projetil p(tela, x+20, y-15, -1);
+			tiros[pos] = p;
+			pos++;
+			if(pos>=len) pos = 0;
+			play_sample(som, 100, 128, 1000, 0);
+		}
+		return pos;
 	}
 	
 	void desenha()
@@ -105,7 +104,7 @@ class inimigo
 		shot_cont = 0;
 		x = xo;
 		y = yo;
-		v = 1;
+		v = 0;
 	}
 	
 	void movimento()
@@ -115,13 +114,13 @@ class inimigo
 			v = -v;
 			y += 10;
 		}
-		x = x+ v;
+		x += v;
 	}
 	
 	projetil atirar()
 	{
 		shot_cont = 0;
-		projetil p(tela, x, y+15, 1);
+		projetil p(tela, x, y+10, 1);
 		return p;
 	}
 	
