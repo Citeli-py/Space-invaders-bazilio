@@ -91,11 +91,11 @@ class jogador
 
 class inimigo
 {
-	private:
+	public:
 		int x,y;
 		int v;
-	public:
 		BITMAP* tela;
+		BITMAP* sprite;
 		int shot_cont;
 		
 	inimigo(BITMAP* bmp, int xo, int yo)
@@ -117,11 +117,18 @@ class inimigo
 		x += v;
 	}
 	
-	projetil atirar()
+	int atirar(projetil *tiros, int pos, int len, SAMPLE *som)
 	{
-		shot_cont = 0;
-		projetil p(tela, x, y+10, 1);
-		return p;
+		if(shot_cont >= 100)
+		{
+			shot_cont = 0;
+			projetil p(tela, x, y+10, 1);
+			tiros[pos] = p;
+			pos++;
+			if(pos>=len) pos = 0;
+			play_sample(som, 100, 128, 1000, 0);
+		}
+		return pos;
 	}
 	
 	void desenha()

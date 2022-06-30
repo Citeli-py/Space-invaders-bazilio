@@ -9,6 +9,16 @@ void inicializa(BITMAP* bmp, projetil* tiros, int len)
 		tiros[i] = p;
 }
 
+void computa_tiros(projetil *tiros, int len)
+{
+	for(int i=0; i<len; i++)
+		if(tiros[i].y>=-10 && tiros[i].y<=610)
+		{
+			tiros[i].movimento();
+			tiros[i].desenha();
+		}
+}
+
 int main() 
 {
 	allegro_init();
@@ -29,7 +39,7 @@ int main()
     play_sample(soundtrack, 100, 128, 1000, 1);
 	
 	jogador j(buffer,400,500);
-	inimigo i(buffer, 400, 190);
+	inimigo i(buffer, 400, 191);
 	
 	int pos=0, len=100;
 	projetil *tiros = (projetil*) malloc(len*sizeof(projetil));
@@ -38,22 +48,9 @@ int main()
 	while (!key[KEY_ESC])
 	{	
 		pos = j.atirar(tiros, pos, len, tiro);
+		pos = i.atirar(tiros, pos, len, tiro);
 		
-		for(int i=0; i<len; i++)
-		{
-			if(tiros[i].y>=-10 && tiros[i].y<=610)
-			{
-				tiros[i].movimento();
-				tiros[i].desenha();
-			}
-		}
-		
-		if(i.shot_cont == 100)
-		{
-			tiros[pos] = i.atirar();
-			pos++;
-			if(pos>=len) pos = 0;
-		}
+		computa_tiros(tiros, len);
 		
 		i.movimento();
 		i.desenha();
