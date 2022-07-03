@@ -1,5 +1,5 @@
 # Project: Projeto2
-# Makefile created by Dev-C++ 5.0.0.8
+# Makefile created by Dev-C++ 4.9.9.3
 
 CPP      = g++.exe
 CC       = gcc.exe
@@ -7,9 +7,9 @@ WINDRES  = windres.exe
 RES      = 
 OBJ      = main.o $(RES)
 LINKOBJ  = main.o $(RES)
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/lib" -L"C:/Program Files (x86)/Dev-Cpp/lib/gcc" -static-libstdc++ -static-libgcc -mwindows -lalleg 
-INCS     = -I"C:/Program Files (x86)/Dev-Cpp/include" 
-CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/include" 
+LIBS     = -L"lib" -L"lib/gcc" -static-libstdc++ -static-libgcc -mwindows -lalleg 
+INCS     = -I"include" 
+CXXINCS  = -I"include"  -I"include/sys"  -I"include/ddk"  -I"include/gdiplus"  -I"include/GL" 
 BIN      = Projeto.exe
 CXXFLAGS = $(CXXINCS)  
 CFLAGS   = $(INCS)  
