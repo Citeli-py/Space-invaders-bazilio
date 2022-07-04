@@ -2,11 +2,13 @@
 #include "classes.hpp"
 #include "audio.hpp"
 
-void inicializa(BITMAP* bmp, projetil* tiros, int len)
+void inicializa(BITMAP* bmp, BITMAP* tiro,projetil* tiros, int len)
 {
-	projetil p(bmp, -1, -10, -1);
+	projetil p(bmp, tiro, -1, -10, -1);
 	for(int i=0; i<len; i++)
+	{
 		tiros[i] = p;
+	}
 }
 
 void computa_tiros(projetil *tiros, int len, personagem *j)
@@ -31,7 +33,8 @@ int main()
 	set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
 	set_window_title("Space Invaders");
 	
-	BITMAP* buffer = create_bitmap(800,600);
+	BITMAP *buffer = load_bitmap("sprite/background.bmp", NULL);
+	BITMAP *tiroImagem = create_bitmap(0,0);
 	SAMPLE *start = load_sample("audio/inicio.wav");
     SAMPLE *soundtrack = load_sample("audio/soundtrack.wav");
     SAMPLE *tiro = load_sample("audio/tiro.wav");
@@ -39,12 +42,12 @@ int main()
     play_sample(start, 100, 128, 1000, 0);
     play_sample(soundtrack, 100, 128, 1000, 1);
 	
-	jogador *j = new jogador(buffer,400,501);
+	jogador *j = new jogador(buffer, 400,501);
 	inimigo *i = new inimigo(buffer, 400, 190);
 	
 	int pos=0, len=100;
 	projetil *tiros = (projetil*) malloc(len*sizeof(projetil));
-	inicializa(buffer, tiros, len);
+	inicializa(buffer, tiroImagem,tiros, len);
 	
 	while (!key[KEY_ESC])
 	{	

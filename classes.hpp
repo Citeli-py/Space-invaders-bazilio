@@ -5,10 +5,12 @@ class projetil
 	public:
 		int x, y, v;
 		BITMAP* tela;
+		BITMAP* tiroImagem;
 		
-	projetil(BITMAP* bmp, int xo, int yo, int dir)
+	projetil(BITMAP* bmp, BITMAP* tiro, int xo, int yo, int dir)
 	{
 		tela = bmp;
+		tiroImagem = tiro;
 		x = xo;
 		y = yo;
 		v = 7*dir;
@@ -16,7 +18,6 @@ class projetil
 	
 	void desenha()
 	{
-		BITMAP* tiroImagem = load_bitmap("sprite/tiro_img.bmp", NULL);
 		draw_sprite(tela, tiroImagem, x, y);
 	}
 	
@@ -39,19 +40,22 @@ class personagem
 		int x, y, v, shot_cont;
 		BITMAP* tela;
 		BITMAP* sprite;
+		BITMAP* tiro;
+		BITMAP* explosao;
 		
-	virtual void movimento()=0;
-	virtual int atirar(projetil *tiros, int pos, int len, SAMPLE *som)=0;
-	virtual void desenha()=0;
-	virtual void destruir()=0;
-	virtual void colisao(projetil *tiro)=0;
+		virtual void movimento()=0;
+		virtual int atirar(projetil *tiros, int pos, int len, SAMPLE *som)=0;
+		virtual void desenha()=0;
+		virtual void destruir()=0;
+		virtual void colisao(projetil *tiro)=0;
 		
 };
 
-class jogador : public personagem
+class jogador : public personagem 
 {	
 	public:
-		jogador(BITMAP* bmp, int xo, int yo)
+		
+		jogador(BITMAP* bmp,  int xo, int yo)
 		{
 			shot_cont = 0;
 			tela = bmp;
@@ -84,10 +88,12 @@ class jogador : public personagem
 		
 		int atirar(projetil *tiros, int pos, int len, SAMPLE *som)
 		{
-			if(key[KEY_SPACE] && shot_cont >= 0)
+			if(key[KEY_SPACE] && shot_cont >= 30)
 			{
+				BITMAP* tiroJogador = load_bitmap("sprite/tiro_img.bmp", NULL);
+				tiro = tiroJogador;
 				shot_cont = 0;
-				projetil p(tela, x+20, y-15, -1);
+				projetil p(tela, tiro, x+20, y-15, -1);
 				tiros[pos] = p;
 				pos++;
 				if(pos>=len) pos = 0;
@@ -116,6 +122,8 @@ class jogador : public personagem
 				if(tiro->y<=y+10 && tiro->y>=y)
 					if(tiro->x>=x-10 && tiro->x<=x+10)
 					{
+						explosao = load_bitmap("sprite/colisao1.bmp", NULL);
+						draw_sprite(tela, explosao, x, y);
 						tiro->destruir();
 						destruir();
 					}
@@ -137,7 +145,7 @@ class inimigo : public personagem
 		
 		void movimento()
 		{
-			if(x<=0 || x>=800)
+			if(x<=20 || x>=780)
 			{
 				v = -v;
 				y += 10;
@@ -147,10 +155,12 @@ class inimigo : public personagem
 		
 		int atirar(projetil *tiros, int pos, int len, SAMPLE *som)
 		{
-			if(shot_cont >= 10)
+			if(shot_cont >= 30)
 			{
+				BITMAP* tiroJogador = load_bitmap("sprite/enemy_shot.bmp", NULL);
+				tiro = tiroJogador;
 				shot_cont = 0;
-				projetil p(tela, x, y+10, 1);
+				projetil p(tela, tiro, x, y+10, 1);
 				tiros[pos] = p;
 				pos++;
 				if(pos>=len) pos = 0;
@@ -162,7 +172,9 @@ class inimigo : public personagem
 		void desenha()
 		{
 			shot_cont++;
-			circlefill(tela, x, y, 10, makecol(255,0,0));
+			BITMAP* naveInimigo = load_bitmap("sprite/enemy_ship.bmp", NULL);
+			sprite = naveInimigo;
+			draw_sprite(tela, sprite, x-20, y-25);				
 		}
 		
 		void destruir()
@@ -177,6 +189,25 @@ class inimigo : public personagem
 				if(tiro->y<=y+10 && tiro->y>=y)
 					if(tiro->x>=x-10 && tiro->x<=x+10)
 					{
+						rest(80);
+						explosao = load_bitmap("sprite/colisao1.bmp", NULL);
+						draw_sprite(tela, explosao, x, y);
+						rest(80);
+						explosao = load_bitmap("sprite/colisao2.bmp", NULL);
+						draw_sprite(tela, explosao, x, y);
+						rest(80);
+						explosao = load_bitmap("sprite/colisao3.bmp", NULL);
+						draw_sprite(tela, explosao, x, y);
+						rest(80);
+						explosao = load_bitmap("sprite/colisao4.bmp", NULL);
+						draw_sprite(tela, explosao, x, y);
+						rest(80);
+						explosao = load_bitmap("sprite/colisao5.bmp", NULL);
+						draw_sprite(tela, explosao, x, y);
+						rest(80);
+						explosao = load_bitmap("sprite/colisao6.bmp", NULL);
+						draw_sprite(tela, explosao, x, y);
+						rest(80);
 						tiro->destruir();
 						destruir();
 					}
