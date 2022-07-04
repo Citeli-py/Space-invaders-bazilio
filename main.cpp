@@ -1,6 +1,7 @@
 #include <allegro.h>
 #include "classes.hpp"
 #include "audio.hpp"
+#include "menu.hpp"
 
 void inicializa(BITMAP* bmp, BITMAP* tiro,projetil* tiros, int len)
 {
@@ -34,6 +35,8 @@ int main()
 	set_window_title("Space Invaders");
 	
 	BITMAP *buffer = load_bitmap("sprite/background.bmp", NULL);
+	menu(buffer);
+	
 	BITMAP *tiroImagem = create_bitmap(0,0);
 	SAMPLE *start = load_sample("audio/inicio.wav");
     SAMPLE *soundtrack = load_sample("audio/soundtrack.wav");
