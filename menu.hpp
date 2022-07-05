@@ -1,5 +1,4 @@
 #include <allegro.h>
-//#include "classes.hpp"
 
 class Fundo
 {
@@ -24,29 +23,15 @@ class Fundo
 void menu(BITMAP* bmp)
 {
     Fundo *f = new Fundo(bmp);
-    /*
-    inimigo *i = (inimigo*) malloc(5*sizeof(inimigo));
 
-    for(int j=0; j<5; j++)
-    {
-        inimigo p(bmp, 20*j + 10, 100);
-        i[j] = p;
-    }*/
-
-    SAMPLE* musica = load_sample("audio/borges.wav");
-    play_sample(musica, 100, 128, 1000, 0);
+    //SAMPLE* musica = load_sample("audio/soundtrack.wav");
+    //play_sample(musica, 100, 128, 1000, 0);
 
     while (!key[KEY_SPACE])
     {
-        /*
-        for(int j=0; j<5; j++)
-        {
-            i[j].movimento();
-            i[j].desenha();
-        }*/
 		f->desenha();
     }
     free(f);
-    destroy_sample(musica);
+    //destroy_sample(musica);
     rest(100);
 }
