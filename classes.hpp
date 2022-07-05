@@ -13,7 +13,7 @@ class projetil
 		tiroImagem = tiro;
 		x = xo;
 		y = yo;
-		v = 3*dir;
+		v = 2*dir;
 	}
 	
 	void desenha()
@@ -94,7 +94,7 @@ class jogador : public personagem
 				BITMAP* tiroJogador = load_bitmap("sprite/tiro_img.bmp", NULL);
 				tiro = tiroJogador;
 				shot_cont = 0;
-				projetil p(tela, tiro, x+20, y-15, -1);
+				projetil p(tela, tiro, x+20, y-15, -2);
 				tiros[pos] = p;
 				pos++;
 				if(pos>=len) pos = 0;
@@ -141,11 +141,12 @@ class inimigo : public personagem
 			x = xo;
 			y = yo;
 			v = 1;
+			if(rand()%2 == 0) v = -v;
 		}
 		
 		void movimento()
 		{
-			if(x <=150 || x>= 700)
+			if(x <=100 || x>= 700)
 			{
 				v = -v;
 			}
@@ -180,14 +181,14 @@ class inimigo : public personagem
 		
 		void destruir()
 		{
-			x = -99;
+			x = 1000;
 			y = -10;
 		}
 
 		void colisao(projetil *tiro)
 		{
 			if(tiro->v<0)
-				if(tiro->y<=y+40 && tiro->y>=y)
+				if(tiro->y<=y+50 && tiro->y>=y-10)
 					if(tiro->x>=x-10 && tiro->x<=x+10)
 					{
 						tiro->destruir();

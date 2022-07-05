@@ -20,7 +20,7 @@ class Fundo
     }
 };
 
-void menu(BITMAP* bmp)
+int menu(BITMAP* bmp)
 {
     Fundo *f = new Fundo(bmp);
 
@@ -29,9 +29,12 @@ void menu(BITMAP* bmp)
 
     while (!key[KEY_SPACE])
     {
+		if(key[KEY_ESC])
+			return 1;
 		f->desenha();
     }
     free(f);
     //destroy_sample(musica);
     rest(100);
+    return 0;
 }
