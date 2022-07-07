@@ -43,20 +43,19 @@ int main()
 	set_window_title("Space Invaders");
 	
 	BITMAP *buffer = create_bitmap(800,600);
-	
-	PALETTE palette;
-	FONT *f = load_font("8-bit-Arcade-In.pcx", palette, NULL);
 	BITMAP *fundo = load_bitmap("sprite/background.bmp", NULL);
-	
 	BITMAP *tiroImagem = create_bitmap(0,0);
+	
 	SAMPLE *start = load_sample("audio/inicio.wav");
     SAMPLE *soundtrack = load_sample("audio/soundtrack.wav");
     SAMPLE *tiro = load_sample("audio/tiro.wav");
     
+    start:
+    
     play_sample(soundtrack, 100, 128, 1000, 1);
     int fim=0;
     fim = menu(buffer);
-    //play_sample(start, 100, 128, 1000, 0);
+	
 	if(!fim)
 	{
 
@@ -113,13 +112,14 @@ int main()
 		}
 		
 		if(fim)
-			gameover(buffer, pontos);
+		{
+			if(gameover(buffer, pontos)) goto start;
+		}
 		
 		free(i);
 		free(j);
 	}
 	
-	destroy_font(f);
 	destroy_bitmap(buffer);
 	destroy_sample(start);
 	destroy_sample(soundtrack);
