@@ -47,12 +47,12 @@ int main()
 	BITMAP *tiroImagem = create_bitmap(0,0);
 	
 	SAMPLE *start = load_sample("audio/inicio.wav");
-    SAMPLE *soundtrack = load_sample("audio/soundtrack.wav");
     SAMPLE *tiro = load_sample("audio/tiro.wav");
     
     start:
-    
+	SAMPLE *soundtrack = load_sample("audio/soundtrack.wav");
     play_sample(soundtrack, 100, 128, 1000, 1);
+		
     int fim=0;
     fim = menu(buffer);
 	
@@ -113,7 +113,8 @@ int main()
 		
 		if(fim)
 		{
-			if(gameover(buffer, pontos)) goto start;
+			destroy_sample(soundtrack);
+			if(gameover(buffer, pontos+1)) goto start;
 		}
 		
 		free(i);
