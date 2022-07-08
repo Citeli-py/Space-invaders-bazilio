@@ -114,7 +114,7 @@ int main()
 		if(fim)
 		{
 			destroy_sample(soundtrack);
-			if(gameover(buffer, pontos+1)) goto start;
+			if(gameover(buffer, pontos)) goto start;
 		}
 		
 		free(i);
